@@ -1,0 +1,70 @@
+import PySimpleGUI as sg
+from notes import Notes
+
+user_control = sg.Column([
+    [sg.Combo(['Bass Clef', 'Alto Clef', 'Tenor Clef', 'Treble Clef'], default_value='Bass Clef',key='-CLEFS-')],
+    [sg.Combo(['C Major', 'G Major', 'D Major', 'A Major', 'Bb Major', 'F Major'], default_value='C Major', enable_events=True, key='-MAJORS-')],
+    [sg.Combo(['A', 'B', 'C', 'D', 'E', 'F', 'G'], default_value='C', key='-NOTES-')],
+    [sg.Combo(['1st', '2nd', '3rd'], default_value='1st', key='-OCTAVES-')],
+    [sg.HorizontalSeparator()],
+    [sg.Combo(['Bass Clef', 'Alto Clef', 'Tenor Clef', 'Trebel Clef'], default_value='Alto Clef', key='-DESIRED_CLEF-')],
+    [sg.Button('CONVERT!', key='convert')],
+    [sg.Button('Credits', key='-CREDITS-')]
+])
+
+user_note_image = sg.Column([[sg.Image("note_placeholder.png", key='-IMAGE1-')]])
+arrow = sg.Column([[sg.Image("arrow.png")]])
+desired_note_image = sg.Column([[sg.Image("note_placeholder.png", key='-IMAGE2-')]])
+
+layout = [[user_control, user_note_image, arrow, desired_note_image]]
+
+window = sg.Window('Fermata ALPHA v1.0.0', layout)
+
+while True:
+    event, values = window.read()
+    if event == sg.WIN_CLOSED:
+        break
+
+    #updates notes when the major changes
+    if event == '-MAJORS-':
+        window['-NOTES-'].update(values=Notes(values['-MAJORS-']))
+
+    #creating a file path with users input from user_control
+    if event == 'convert':
+        if len(values['-CLEFS-']) == 9:
+            clef = values['-CLEFS-'][0:4].lower()
+
+        elif len(values['-CLEFS-']) == 10:
+            clef = values['-CLEFS-'][0:5].lower()
+
+        else:
+            clef = values['-CLEFS-'][0:6].lower()
+
+        
+        if len(values['-DESIRED_CLEF-']) == 9:
+            clef_switch = values['-DESIRED_CLEF-'][0:4].lower()
+
+        elif len(values['-DESIRED_CLEF-']) == 10:
+            clef_switch = values['-DESIRED_CLEF-'][0:5].lower()
+
+        else:
+            clef_switch = values['-DESIRED_CLEF-'][0:6].lower()
+        
+        major = values['-MAJORS-'][0].lower() + "_major"
+        note = values['-NOTES-'][0].lower()
+        octave = values['-OCTAVES-'][0]
+
+        image_input = f"clef_notes\\{clef}\\{major}\\{octave}_{note}" + ".png"
+        image_output = f"clef_notes\\{clef_switch}\\{major}\\{octave}_{note}" + ".png"
+
+        window['-IMAGE1-'].update(filename = image_input)
+        window['-IMAGE2-'].update(filename = image_output)
+        window.refresh()
+    
+    #pressing credits or version will popup a window of the credits and log of current version
+    if event == '-CREDITS-':
+        sg.popup('Josias Kanyinda - Designing/Programming\n\nThank Jasmine and Jennifer for providing the Treble notes ;3')
+
+
+
+window.close()
