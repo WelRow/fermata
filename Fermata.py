@@ -18,7 +18,7 @@ desired_note_image = sg.Column([[sg.Image("note_placeholder.png", key='-IMAGE2-'
 
 layout = [[user_control, user_note_image, arrow, desired_note_image]]
 
-window = sg.Window('Fermata ALPHA v1.0.0', layout)
+window = sg.Window('Fermata ALPHA v1.0.0', layout, use_custom_titlebar = True, titlebar_icon='Fermata_Logo.png')
 
 while True:
     event, values = window.read()
