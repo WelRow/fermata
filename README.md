@@ -1,2 +1,2 @@
-# fermata
+# Fermata
 A musical note translator
