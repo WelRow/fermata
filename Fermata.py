@@ -126,7 +126,7 @@ while True:
     # clicking convert will translate current note and give an image to the bottom image
     if event == 'convert':
         # if user wants to see highest note in user clef where major has 2 octaves and desired clef has 3 octaves, it will give the highest 3rd note
-        if octave == 'highest' and not path.isfile(f"clef_notes\\{clef}\\{major}\\3_{values['-NOTES-'][0].lower()}" + ".png"):
+        if octave == 'highest' and path.isfile(f"clef_notes\\{clef_switch}\\{major}\\3_{values['-NOTES-'][0].lower()}" + ".png"):
             octave = '3'
 
         image_output = f"clef_notes\\{clef_switch}\\{major}\\{octave}_{note}" + ".png"
